@@ -1,7 +1,7 @@
-# Use a specific, stable Python image version with precise Debian build environments
-FROM python:3.9-slim-bullseye
+# Upgrade to Python 3.10 to support modern py-tgcalls distributions
+FROM python:3.10-slim-bullseye
 
-# Install FFmpeg and required compilation tools for C++ audio components
+# Install compilation tools and ffmpeg
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
     build-essential \
@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
-# Upgrade pip first to ensure proper dependency resolution
+# Install Python packages
 COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt

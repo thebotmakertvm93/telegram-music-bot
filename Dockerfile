@@ -20,4 +20,3 @@ COPY . .
 
 # Run the bot
 CMD ["python", "main.py"]
-Use code with caution.

@@ -4,7 +4,7 @@ from aiohttp import web
 from pyrogram import Client, filters
 from pyrogram.types import Message
 from pytgcalls import PyTgCalls
-from pytgcalls.types import MediaStream
+from pytgcalls.types.input_stream import InputAudioStream
 import yt_dlp
 from config import API_ID, API_HASH, BOT_TOKEN, SESSION_STRING, PORT
 
@@ -52,10 +52,10 @@ async def play_song(client: Client, message: Message):
             audio_url = info['url']
             title = info.get('title', 'Unknown Track')
         
-        # Stream directly to the voice chat
-        await call_py.play(
+        # Stream directly to the voice chat using stable v1 input stream parameters
+        await call_py.join_group_call(
             chat_id,
-            MediaStream(audio_url)
+            InputAudioStream(audio_url)
         )
         await status_msg.edit(f"🎵 **Now Playing:** {title}")
     except Exception as e:

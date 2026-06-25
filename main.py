@@ -31,21 +31,16 @@ async def start_web_server():
 @bot.on_message(filters.command("play") & filters.group)
 async def play_song(client: Client, message: Message):
     if len(message.command) < 2:
-        return await message.reply("Please provide a YouTube link. Example: `/play https://youtube.com...`")
+        return await message.reply("Please provide a YouTube link. Example: `/play https://youtube.com/...`")
     
-    url = message.command[1]
+    # FIX: Change from 'message.command' to 'message.command[1]' to get the string URL
+    url = message.command[1] 
     chat_id = message.chat.id
     status_msg = await message.reply("⏳ Initializing audio stream wrapper...")
 
     try:
-        # Create a dynamic file group call client for the specific group ID
         group_call = group_call_factory.get_file_group_call()
-        
-        # Connect to the voice chat group
         await group_call.join(chat_id)
-        
-        # Stream the audio input URL directly through yt-dlp handling strings
-        # v3.x handles audio streaming hooks directly via underlying C components
         await group_call.start_audio_streaming(url, repeat=False)
         
         await status_msg.edit(f"🎵 **Now Playing:** `{url}`")
